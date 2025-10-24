@@ -1,0 +1,55 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  goals     Goal[]
+  xpEvents  XPEvent[]
+  avatar    Avatar?
+}
+
+model Goal {
+  id           String   @id @default(cuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id])
+  name         String
+  unit         String   @default("min")
+  dailyTarget  Int      @default(30)
+  difficulty   Int      @default(1)
+  entries      Entry[]
+  createdAt    DateTime @default(now())
+}
+
+model Entry {
+  id       String   @id @default(cuid())
+  goalId   String
+  goal     Goal     @relation(fields: [goalId], references: [id])
+  date     DateTime @default(now())
+  value    Int
+}
+
+model XPEvent {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  goalId    String?
+  amount    Int
+  createdAt DateTime @default(now())
+}
+
+model Avatar {
+  id        String   @id @default(cuid())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  level     Int      @default(1)
+  xp        Int      @default(0)
+  streak    Int      @default(0)
+}
