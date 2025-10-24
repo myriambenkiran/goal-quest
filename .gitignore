@@ -50,3 +50,6 @@ next-env.d.ts
 # Prisma local databases (SQLite)
 prisma/*.db
 prisma/*.db-journal
+
+# note for myself
+note_to_self.md
