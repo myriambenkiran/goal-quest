@@ -1,0 +1,33 @@
+# Fail fast on any error
+set -euo pipefail
+
+echo "🧹 Running lint-staged (ESLint + Prettier on staged files)…"
+npx lint-staged
+
+# If the Prisma schema is staged, keep it tidy, valid, and regen types
+if git diff --name-only --cached | grep -q '^prisma/schema\.prisma$'; then
+  echo "🧭 Prisma schema changed — formatting, validating, and generating client…"
+  npx prisma format
+  npx prisma validate
+  npx prisma generate
+fi
+
+# Type-check the project (fast, no emit)
+if [ -f "tsconfig.json" ]; then
+  echo "🔎 Type-checking with TypeScript…"
+  npx tsc --noEmit
+fi
+
+# Optional: Next.js lint (if you want Next-specific rules beyond eslint --fix via lint-staged)
+# echo "🧪 next lint…"
+# npx next lint
+
+# Optional: quick tests (keep very fast or move to pre-push/CI)
+# echo "🧪 Running quick tests…"
+# npm run test:quick
+
+# Optional: validate env (only if you have a script like `npm run validate:env`)
+# echo "🔐 Validating environment…"
+# npm run validate:env
+
+echo "✅ Pre-commit checks passed!"
