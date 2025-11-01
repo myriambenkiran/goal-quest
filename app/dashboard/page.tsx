@@ -51,7 +51,20 @@ export default function DashboardPage() {
             gap-4               adds space between flex items (4 = 1rem)
             gap-2               adds space between flex items (2 = 0.5rem)
         */
-    <main className="min-h-screen bg-neutral-950 text-white flex items-center justify-center p-6 gap-8">
+    <main className="min-h-screen bg-neutral-950 text-white flex flex-col md:flex-row items-center justify-center p-6 gap-8">
+      {/* LEFT SIDE (or UP): Avatar art */}
+      <div className="flex flex-col items-center">
+        <section className="relative w-32 h-48 md:w-40 md:h-60 flex items-center justify-center mt-6 md:mt-0 transition-all duration-300">
+          {/* glow aura */}
+          <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-purple-500/20 via-transparent to-transparent blur-xl" />
+          <Image
+            src="/avatars/mainchar_lvl00.png"
+            alt="full-body illustrated avatar of the user at current level"
+            fill
+            className="object-contain relative z-10 drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]"
+          />
+        </section>
+      </div>
       <div className="w-full max-w-md">
         {/* Avatar Card */}
         <section className="bg-neutral-900 rounded-2xl p-5 shadow-lg border border-neutral-800 flex flex-col gap-4">
@@ -100,27 +113,14 @@ export default function DashboardPage() {
             </div>
 
             <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
-              {/* hardcode like "1% to next level" */}
+              {/* TODO: hardcode like "1% to next level" calculate dynamically */}
               <div className="h-full bg-white" style={{ width: "1%" }} />
             </div>
 
             <p className="text-[11px] text-neutral-500 text-right">
-              490 GP to next level
+              490 GP to next level //TODO: calculate dynamically
             </p>
           </div>
-        </section>
-      </div>
-      {/* RIGHT SIDE: Avatar art */}
-      <div className="flex flex-col items-center">
-        <section className="relative w-40 h-60 flex items-center justify-center">
-          {/* glow aura */}
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-purple-500/20 via-transparent to-transparent blur-xl" />
-          <Image
-            src="/avatar_level_0.png"
-            alt="Your character"
-            fill
-            className="object-contain relative z-10 drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]"
-          />
         </section>
       </div>
     </main>
