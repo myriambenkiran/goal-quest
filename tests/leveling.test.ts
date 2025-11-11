@@ -1,6 +1,6 @@
 // lib/leveling.test.ts
 import { describe, it, expect } from "vitest";
-import { getLevelFromGp, getLevelInfo } from "./leveling";
+import { getLevelFromGp, getLevelInfo } from "../lib/leveling";
 
 const levelMap = {
   1: 0,

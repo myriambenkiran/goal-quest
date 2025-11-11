@@ -1,11 +1,11 @@
+import Image from "next/image";
+import { getLevelInfo } from "@/lib/leveling";
+
 type Avatar = {
   name: string;
   gp: number;
   globalHotness: number;
 };
-
-import Image from "next/image";
-import { getLevelInfo } from "@/lib/leveling";
 
 export default function DashboardPage() {
   const avatar: Avatar = {
@@ -127,7 +127,7 @@ export default function DashboardPage() {
             </div>
 
             <p className="text-[11px] text-neutral-500 text-right">
-              {gpToNext} GP to next level
+              {gpToNext > 0 ? `${gpToNext} GP to next level` : "Max level"}
             </p>
           </div>
         </section>
