@@ -24,13 +24,19 @@ export function getLevelFromGp(gp: number, levelMap: LevelMap): number {
 export function getLevelInfo(gp: number, levelMap: LevelMap) {
   const level = getLevelFromGp(gp, levelMap);
   const gpStartLevel = levelMap[level];
-  const gpToNext = levelMap[level + 1]; // might be undefined if at max level
+  const gpNextLevel = levelMap[level + 1]; // might be undefined if at max level
 
   // fix: progress should be based on (gp - start)
-  const percentageToNext =
-    gpToNext != null
-      ? ((gp - gpStartLevel) * 100) / (gpToNext - gpStartLevel)
-      : 100;
+  const percentageToNext = Math.min(
+    Math.max(
+      gpNextLevel != null
+        ? ((gp - gpStartLevel) * 100) / (gpNextLevel - gpStartLevel)
+        : 100,
+      0,
+    ),
+    100,
+  );
 
+  const gpToNext = gpNextLevel != null ? gpNextLevel - gp : 0;
   return { level, percentageToNext, gpToNext };
 }

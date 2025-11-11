@@ -5,7 +5,7 @@ type Avatar = {
 };
 
 import Image from "next/image";
-import { getLevelInfo } from "@/lib/labeling";
+import { getLevelInfo } from "@/lib/leveling";
 
 export default function DashboardPage() {
   const avatar: Avatar = {
