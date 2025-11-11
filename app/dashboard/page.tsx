@@ -1,5 +1,6 @@
-import Image from "next/image";
 import { getLevelInfo } from "@/lib/leveling";
+import { Avatar } from "@/components/Avatar";
+import { StatsCard } from "@/components/StatsCard";
 
 type Avatar = {
   name: string;
@@ -7,21 +8,18 @@ type Avatar = {
   globalHotness: number;
 };
 
-export default function DashboardPage() {
-  const avatar: Avatar = {
-    name: "Sirine",
-    gp: 10,
-    globalHotness: 25,
-  };
-  const levelMap: Record<number, number> = {
-    1: 0,
-    2: 100,
-  };
-  const { level, percentageToNext, gpToNext } = getLevelInfo(
-    avatar.gp,
-    levelMap,
-  );
+const avatar: Avatar = {
+  name: "Sirine",
+  gp: 10,
+  globalHotness: 25,
+};
+const levelMap: Record<number, number> = {
+  1: 0,
+  2: 100,
+};
+const { level, percentageToNext, gpToNext } = getLevelInfo(avatar.gp, levelMap);
 
+export default function DashboardPage() {
   return (
     /*
             min-h-screen	    makes it at least the full height of the screen (so it fills the window)
@@ -61,76 +59,18 @@ export default function DashboardPage() {
     <main className="min-h-screen bg-neutral-950 text-white flex flex-col md:flex-row items-center justify-center p-6 gap-8">
       {/* LEFT SIDE (or UP): Avatar art */}
       <div className="flex flex-col items-center">
-        <section className="relative w-32 h-48 md:w-40 md:h-60 flex items-center justify-center mt-6 md:mt-0 transition-all duration-300">
-          {/* glow aura */}
-          <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-purple-500/20 via-transparent to-transparent blur-xl" />
-          <Image
-            src="/avatars/mainchar_lvl00.png"
-            alt="full-body illustrated avatar of the user at current level"
-            fill
-            className="object-contain relative z-10 drop-shadow-[0_0_20px_rgba(255,255,255,0.15)]"
-          />
-        </section>
+        <Avatar
+          src="/avatars/mainchar_lvl00.png"
+          alt="full-body illustrated avatar of the user"
+        />
       </div>
       <div className="w-full max-w-md">
-        {/* Avatar Card */}
-        <section className="bg-neutral-900 rounded-2xl p-5 shadow-lg border border-neutral-800 flex flex-col gap-4">
-          <header className="flex items-center justify-between">
-            {/* name */}
-            <div className="flex flex-col">
-              <span className="text-sm text-neutral-400">Welcome back</span>
-              <span className="text-lg font-semibold">{avatar.name} ✨</span>
-            </div>
-
-            {/* Level */}
-            <div className="text-right">
-              <p className="text-xs text-neutral-400 uppercase tracking-wide">
-                Level
-              </p>
-              <p className="text-2xl font-bold leading-none">{level}</p>
-            </div>
-          </header>
-
-          {/* GP row */}
-          <div className="flex items-baseline justify-between">
-            <div>
-              <p className="text-xs text-neutral-400 uppercase tracking-wide">
-                Glow Points
-              </p>
-              <p className="text-xl font-semibold leading-none">
-                {avatar.gp} GP
-              </p>
-            </div>
-
-            <div className="text-right">
-              <p className="text-xs text-neutral-400 uppercase tracking-wide">
-                Global Hotness
-              </p>
-              <p className="text-xl font-semibold leading-none">
-                {avatar.globalHotness}%
-              </p>
-            </div>
-          </div>
-
-          {/* Progress bar toward next level */}
-          <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between text-xs text-neutral-400">
-              <span>Level {level}</span>
-              <span>Level {level + 1}</span>
-            </div>
-
-            <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
-              <div
-                className="h-full bg-white"
-                style={{ width: `${percentageToNext}%` }}
-              />
-            </div>
-
-            <p className="text-[11px] text-neutral-500 text-right">
-              {gpToNext > 0 ? `${gpToNext} GP to next level` : "Max level"}
-            </p>
-          </div>
-        </section>
+        <StatsCard
+          {...avatar}
+          level={level}
+          percentageToNext={percentageToNext}
+          gpToNext={gpToNext}
+        />
       </div>
     </main>
   );
