@@ -1,19 +1,26 @@
 type Avatar = {
   name: string;
-  level: number;
   gp: number;
   globalHotness: number;
 };
 
 import Image from "next/image";
+import { getLevelInfo } from "@/lib/labeling";
 
 export default function DashboardPage() {
   const avatar: Avatar = {
     name: "Sirine",
-    level: 0,
     gp: 10,
     globalHotness: 25,
   };
+  const levelMap: Record<number, number> = {
+    1: 0,
+    2: 100,
+  };
+  const { level, percentageToNext, gpToNext } = getLevelInfo(
+    avatar.gp,
+    levelMap,
+  );
 
   return (
     /*
@@ -80,7 +87,7 @@ export default function DashboardPage() {
               <p className="text-xs text-neutral-400 uppercase tracking-wide">
                 Level
               </p>
-              <p className="text-2xl font-bold leading-none">{avatar.level}</p>
+              <p className="text-2xl font-bold leading-none">{level}</p>
             </div>
           </header>
 
@@ -108,17 +115,19 @@ export default function DashboardPage() {
           {/* Progress bar toward next level */}
           <div className="flex flex-col gap-2">
             <div className="flex items-center justify-between text-xs text-neutral-400">
-              <span>Level {avatar.level}</span>
-              <span>Level {avatar.level + 1}</span>
+              <span>Level {level}</span>
+              <span>Level {level + 1}</span>
             </div>
 
             <div className="w-full h-2 bg-neutral-800 rounded-full overflow-hidden">
-              {/* TODO: hardcode like "1% to next level" calculate dynamically */}
-              <div className="h-full bg-white" style={{ width: "1%" }} />
+              <div
+                className="h-full bg-white"
+                style={{ width: `${percentageToNext}%` }}
+              />
             </div>
 
             <p className="text-[11px] text-neutral-500 text-right">
-              490 GP to next level //TODO: calculate dynamically
+              {gpToNext} GP to next level
             </p>
           </div>
         </section>
